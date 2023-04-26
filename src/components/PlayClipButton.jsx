@@ -1,8 +1,14 @@
 import "./playclipbutton.css";
 
-function PlayClipButton({ startTime, index, handleButtonClick, selected }) {
+function PlayClipButton({
+  startTime,
+  endTime,
+  index,
+  handleButtonClick,
+  selected,
+}) {
   const handleClick = () => {
-    handleButtonClick(startTime, index);
+    handleButtonClick(startTime, endTime, index);
   };
   return (
     <button

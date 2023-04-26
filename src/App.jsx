@@ -7,9 +7,15 @@ import HashLoader from "react-spinners/HashLoader";
 import "./App.css";
 
 function App() {
-  const timeStamps = [{ start: 50 }, { start: 100 }, { start: 150 }];
+  const timeStamps = [
+    { start: 50, end: 52 },
+    { start: 100, end: 110 },
+    { start: 150, end: 160 },
+  ];
 
   const [videoStartValue, setvideoStartValue] = useState(0);
+  const [key, setKey] = useState(0);
+  const [videoEndValue, setvideoEndValue] = useState(999999);
   const [url, setUrl] = useState("");
   const [prompt, setPrompt] = useState("");
   const [showError, setshowError] = useState(false);
@@ -18,8 +24,10 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [showPlayer, setShowPlayer] = useState(false);
 
-  const handlePlayclip = (value, index) => {
-    setvideoStartValue(parseInt(value));
+  const handlePlayclip = (startValue, endValue, index) => {
+    setKey(Math.random());
+    setvideoStartValue(parseInt(startValue));
+    setvideoEndValue(parseInt(endValue));
     setSelectedButton(index);
     setplaying(true);
   };
@@ -47,6 +55,7 @@ function App() {
       <PlayClipButton
         key={timeStamp.start}
         startTime={timeStamp.start}
+        endTime={timeStamp.end}
         index={i + 1}
         selected={selectedButton === i + 1}
         handleButtonClick={handlePlayclip}
@@ -92,7 +101,10 @@ function App() {
         <div className="player">
           <VideoPlayer
             url={showPlayer && url}
+            key={key}
             startTime={videoStartValue}
+            endTime={videoEndValue}
+            end={videoEndValue}
             playing={playing}
           />
           <div>{renderedButtons}</div>

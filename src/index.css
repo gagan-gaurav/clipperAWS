@@ -43,7 +43,7 @@ body {
   font-family: "Ysabeau", sans-serif;
   text-rendering: optimizeSpeed;
   line-height: 1.5;
-  overflow: hidden;
+  overflow: scroll;
 }
 
 /* A elements that don't have a class get default styles */
@@ -96,8 +96,8 @@ select {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #132b4c;
-  border-radius: 10px;
+  background: #2196f3;
+  border-radius: 5px;
   max-height: 5px;
 }
 

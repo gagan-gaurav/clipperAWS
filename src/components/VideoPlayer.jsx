@@ -1,18 +1,23 @@
 import { useRef } from "react";
 import ReactPlayer from "react-player";
 
-function VideoPlayer({ url, startTime, playing }) {
+function VideoPlayer({ url, key, startTime, endTime, playing }) {
   const playerRef = useRef(null);
   return (
     <div>
       <ReactPlayer
         ref={playerRef}
         url={url}
-        key={startTime}
+        key={key}
         width="900px"
         height="400px"
         playing={playing}
         controls={true}
+        onProgress={(state) => {
+          if (Math.floor(state.playedSeconds) >= endTime) {
+            playerRef.current.getInternalPlayer().pause();
+          }
+        }}
         onStart={() => {
           if (startTime != 0) {
             playerRef.current.seekTo(startTime);
@@ -22,6 +27,7 @@ function VideoPlayer({ url, startTime, playing }) {
           youtube: {
             playerVars: {
               start: startTime,
+              end: endTime,
             },
           },
         }}
