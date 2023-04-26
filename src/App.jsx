@@ -19,29 +19,36 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [showPlayer, setShowPlayer] = useState(false);
 
-  const handleRequest = async (url, prompt) => {
-    const timeStamps = [
-      [20, 30],
-      [20, 30],
-      [20, 30],
-    ];
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        link: url,
-        prompt: prompt,
-      }),
-    });
-    const result = await response.json();
+  // const timeStamps = [
+  //   [3, 10],
+  //   [14, 17],
+  //   [20, 30],
+  // ];
+  // const handleRequest = async (url, prompt) => {
+  //   const timeStamps = [
+  //     [20, 30],
+  //     [20, 30],
+  //     [20, 30],
+  //   ];
+  //   const response = await fetch("https://3d5962dd-25ee-4fa3-a398-00011b986375.mock.pstmn.io/api", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       link: url,
+  //       prompt: prompt,
+  //     }),
+  //   });
 
-    setShowPlayer(true);
-    setLoading(false);
+  //   // const result = await response.json();
+  //   console.log(result);
 
-    settimeStamps([...timeStamps]);
-  };
+  //   setShowPlayer(true);
+  //   setLoading(false);
+
+  //   settimeStamps([...timeStamps]);
+  // };
 
   const handlePlayclip = (startValue, endValue, index) => {
     setKey(Math.random());
@@ -67,7 +74,27 @@ function App() {
     }
     setshowError(false);
     setLoading(true);
-    handleRequest(url, prompt);
+
+    fetch('http://127.0.0.1:5000/process', {
+      method: 'POST',
+      body: JSON.stringify({ url, prompt }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data); // handle the response data here
+      setShowPlayer(true);
+      setLoading(false);
+      let time = data.timestamps;
+      settimeStamps(time);
+    })
+    .catch(error => {
+      setLoading(false);
+      setshowError(true);
+    });
+
+    // handleRequest(url, prompt);
+
   };
 
   const renderedButtons = timeStamps.map((timeStamp, i) => {
