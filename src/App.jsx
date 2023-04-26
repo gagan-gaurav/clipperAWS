@@ -7,12 +7,7 @@ import HashLoader from "react-spinners/HashLoader";
 import "./App.css";
 
 function App() {
-  const timeStamps = [
-    { start: 50, end: 52 },
-    { start: 100, end: 110 },
-    { start: 150, end: 160 },
-  ];
-
+  const [timeStamps, settimeStamps] = useState([]);
   const [videoStartValue, setvideoStartValue] = useState(0);
   const [key, setKey] = useState(0);
   const [videoEndValue, setvideoEndValue] = useState(999999);
@@ -23,6 +18,30 @@ function App() {
   const [selectedButton, setSelectedButton] = useState(-1);
   const [loading, setLoading] = useState(false);
   const [showPlayer, setShowPlayer] = useState(false);
+
+  const handleRequest = async (url, prompt) => {
+    const timeStamps = [
+      [20, 30],
+      [20, 30],
+      [20, 30],
+    ];
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        link: url,
+        prompt: prompt,
+      }),
+    });
+    const result = await response.json();
+
+    setShowPlayer(true);
+    setLoading(false);
+
+    settimeStamps([...timeStamps]);
+  };
 
   const handlePlayclip = (startValue, endValue, index) => {
     setKey(Math.random());
@@ -47,15 +66,16 @@ function App() {
       return;
     }
     setshowError(false);
-    setShowPlayer(true);
+    setLoading(true);
+    handleRequest(url, prompt);
   };
 
   const renderedButtons = timeStamps.map((timeStamp, i) => {
     return (
       <PlayClipButton
-        key={timeStamp.start}
-        startTime={timeStamp.start}
-        endTime={timeStamp.end}
+        key={timeStamp[0]}
+        startTime={timeStamp[0]}
+        endTime={timeStamp[1]}
         index={i + 1}
         selected={selectedButton === i + 1}
         handleButtonClick={handlePlayclip}
