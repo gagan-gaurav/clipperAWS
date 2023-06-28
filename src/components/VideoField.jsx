@@ -10,7 +10,7 @@ function VideoField({ onSubmit }) {
 
   return (
     <div className="videoInput-container">
-      <div> or Drop a video</div>
+      
       <label
         htmlFor="video"
         style={{
